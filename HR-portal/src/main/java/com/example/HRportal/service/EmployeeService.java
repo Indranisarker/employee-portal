@@ -6,6 +6,10 @@ import com.example.HRportal.entity.Address;
 import com.example.HRportal.entity.Employee;
 import com.example.HRportal.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,13 +21,24 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public List<EmployeeDTO> getAllEmployee(){
-        List<Employee> employees = employeeRepository.findAll();
-        List<EmployeeDTO> allEmployees = new ArrayList<>();
-        for(Employee employee:employees){
-            allEmployees.add(EmployeeDTO.toDto(employee));
-        }
-        return allEmployees;
+//    public List<EmployeeDTO> getAllEmployee( int pageNo, int pageSize , String sortOrder){
+//        Sort sort = sortOrder.equals("asc") ? Sort.by("name").ascending() : Sort.by("name").descending();
+//        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+//        Page<Employee> pageContent = employeeRepository.findAll(paging);
+//        List<Employee> employees = pageContent.getContent();
+//        List<EmployeeDTO> allEmployees = new ArrayList<>();
+//        for(Employee employee:employees){
+//            allEmployees.add(EmployeeDTO.toDto(employee));
+//        }
+//        return allEmployees;
+//    }
+    //Return a page
+    public Page<Employee> getAllEmployee( int pageNo, int pageSize , String sortOrder){
+        Sort sort = sortOrder.equals("asc") ? Sort.by("name").ascending() : Sort.by("name").descending();
+        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+        Page<Employee> pageContent = employeeRepository.findAll(paging);
+
+        return pageContent;
     }
     public EmployeeDTO getOneEmployee(Long id){
         Optional<Employee> em = employeeRepository.findById(id);

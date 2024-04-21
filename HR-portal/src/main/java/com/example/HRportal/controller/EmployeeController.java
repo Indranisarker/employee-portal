@@ -5,6 +5,7 @@ import com.example.HRportal.domain.EmployeeWithAddressDTO;
 import com.example.HRportal.entity.Employee;
 import com.example.HRportal.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,20 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     //Get all employees
+//    @GetMapping("/employees")
+//    public List<EmployeeDTO> getEmployees(@RequestParam int pageNo, int pageSize,  String sortOrder){
+//        return employeeService.getAllEmployee(pageNo, pageSize, sortOrder);
+//    }
+    private static final int MIN_PAGE_SIZE = 5;
+    private static final int MAX_PAGE_SIZE = 50;
     @GetMapping("/employees")
-    public List<EmployeeDTO> getEmployees(){
-        return employeeService.getAllEmployee();
+    //Also we can set default values for these parameters,
+    // these default values work when we didn't give any parameters from frontend
+    public Page<Employee> getEmployees(@RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize,
+                                       @RequestParam(defaultValue = "asc") String sortOrder){
+        //pageSize can be limited in min and max value
+        int validPageSize = Math.max(MIN_PAGE_SIZE, Math.min(pageSize, MAX_PAGE_SIZE));
+        return employeeService.getAllEmployee(pageNo, validPageSize, sortOrder);
     }
 
     //Get employee by id
