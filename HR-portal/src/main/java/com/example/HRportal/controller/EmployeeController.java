@@ -3,6 +3,7 @@ package com.example.HRportal.controller;
 import com.example.HRportal.domain.EmployeeDTO;
 import com.example.HRportal.domain.EmployeeWithAddressDTO;
 import com.example.HRportal.entity.Employee;
+import com.example.HRportal.exception.ResourceNotFound;
 import com.example.HRportal.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class EmployeeController {
 
     //Get employee by id
     @GetMapping("/employeeId/{id}")
-    public EmployeeDTO getEmployeeById(@PathVariable("id") Long id){
+    public EmployeeDTO getEmployeeById(@PathVariable("id") Long id) {
         return employeeService.getOneEmployee(id);
     }
     //Get employee by Name

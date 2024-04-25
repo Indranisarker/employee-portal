@@ -4,6 +4,8 @@ import com.example.HRportal.domain.EmployeeDTO;
 import com.example.HRportal.domain.EmployeeWithAddressDTO;
 import com.example.HRportal.entity.Address;
 import com.example.HRportal.entity.Employee;
+import com.example.HRportal.exception.RecordNotFound;
+import com.example.HRportal.exception.ResourceNotFound;
 import com.example.HRportal.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +49,9 @@ public class EmployeeService {
           employee = em.get();
         }
        else{
-            throw new RuntimeException("Employee is not found for id: " + id);
+            //throw new RecordNotFound("Employee is not found for id: " + id);
+            //throw new RuntimeException("Employee is not found for id: " + id);
+            throw new ResourceNotFound("Employee not found for the id: " + id);
         }
         //Mapping entity to DTO
         return EmployeeDTO.toDto(employee);
